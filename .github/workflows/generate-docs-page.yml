@@ -13,18 +13,22 @@ jobs:
 
       - name: Setup Ruby environment
         run: |
-          echo 'export GEM_HOME=$HOME/.gem' >> $BASH_ENV
-          echo 'export PATH=$HOME/.gem/bin:$PATH' >> $BASH_ENV
-          source $BASH_ENV
+          echo 'export GEM_HOME=$HOME/.gem' >> $GITHUB_ENV
+          echo 'export PATH=$HOME/.gem/bin:$PATH' >> $GITHUB_ENV
 
       - name: Setup Jekyll
+        env:
+          GEM_HOME: ${{ secrets.GEM_HOME }}
+          PATH: ${{ secrets.PATH }}:$PATH
         run: |
           gem install bundler --user-install
           bundle config set path 'vendor/bundle'
           bundle install
 
       - name: Build and deploy site
+        env:
+          GEM_HOME: ${{ secrets.GEM_HOME }}
+          PATH: ${{ secrets.PATH }}:$PATH
         run: |
           jekyll build --config _config.yml
           cp -r _site/* /docs/
-
