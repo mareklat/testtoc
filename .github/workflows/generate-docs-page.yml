@@ -11,13 +11,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Ruby environment
+        run: |
+          echo 'export GEM_HOME=$HOME/.gem' >> $BASH_ENV
+          echo 'export PATH=$HOME/.gem/bin:$PATH' >> $BASH_ENV
+          source $BASH_ENV
+
       - name: Setup Jekyll
         run: |
-          gem install bundler
-          bundle config --local path .
+          gem install bundler --user-install
+          bundle config set path 'vendor/bundle'
           bundle install
 
       - name: Build and deploy site
         run: |
           jekyll build --config _config.yml
           cp -r _site/* /docs/
+
