@@ -11,6 +11,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
       - name: Setup Ruby environment
         run: |
           echo 'export GEM_HOME=$HOME/.gem' >> $GITHUB_ENV
@@ -18,8 +23,8 @@ jobs:
 
       - name: Setup Jekyll
         env:
-          GEM_HOME: ${{ secrets.GEM_HOME }}
-          PATH: ${{ secrets.PATH }}:$PATH
+          GEM_HOME: ${{ env.GEM_HOME }}
+          PATH: ${{ env.PATH }}
         run: |
           gem install bundler --user-install
           bundle config set path 'vendor/bundle'
@@ -27,8 +32,8 @@ jobs:
 
       - name: Build and deploy site
         env:
-          GEM_HOME: ${{ secrets.GEM_HOME }}
-          PATH: ${{ secrets.PATH }}:$PATH
+          GEM_HOME: ${{ env.GEM_HOME }}
+          PATH: ${{ env.PATH }}
         run: |
           jekyll build --config _config.yml
           cp -r _site/* /docs/
