@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           apt-get update && apt-get install -y \
             build-essential \
@@ -24,11 +24,16 @@ jobs:
             libxml2-dev \
             libxslt1-dev \
             libcurl4-openssl-dev \
-            libffi-dev
+            libffi-dev \
+            git \
+            wget
 
-      - name: Setup Jekyll
+      - name: Install Bundler and Jekyll
         run: |
-          gem install bundler
+          gem install bundler jekyll
+
+      - name: Setup Bundler config
+        run: |
           bundle config set --local path 'vendor/bundle'
           bundle install
 
