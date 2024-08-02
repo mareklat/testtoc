@@ -1,0 +1,12 @@
+# Configure Jekyll to use the _docs directory as the source
+source: docs
+
+# Specify the output path for our documentation webpage
+destination: .
+
+# Enable GitHub Pages support
+theme: minima
+paginate: 10
+
+# Set up a custom URL prefix
+url: /docs/

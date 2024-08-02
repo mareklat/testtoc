@@ -1,0 +1,23 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Jekyll
+        run: |
+          gem install bundler
+          bundle config --local path .
+          bundle install
+
+      - name: Build and deploy site
+        run: |
+          jekyll build --config _config.yml
+          cp -r _site/* /docs/
