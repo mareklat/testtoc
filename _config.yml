@@ -2,7 +2,7 @@
 source: docs
 
 # Specify the output path for our documentation webpage
-destination: .
+destination: page
 
 # Enable GitHub Pages support
 theme: minima
