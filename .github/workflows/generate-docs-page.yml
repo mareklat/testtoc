@@ -7,33 +7,18 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    container: jekyll/builder:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-
-      - name: Setup Ruby environment
-        run: |
-          echo 'export GEM_HOME=$HOME/.gem' >> $GITHUB_ENV
-          echo 'export PATH=$HOME/.gem/bin:$PATH' >> $GITHUB_ENV
-
       - name: Setup Jekyll
-        env:
-          GEM_HOME: ${{ env.GEM_HOME }}
-          PATH: ${{ env.PATH }}
         run: |
-          gem install bundler --user-install
+          gem install bundler
           bundle config set path 'vendor/bundle'
           bundle install
 
       - name: Build and deploy site
-        env:
-          GEM_HOME: ${{ env.GEM_HOME }}
-          PATH: ${{ env.PATH }}
         run: |
           jekyll build --config _config.yml
           cp -r _site/* /docs/
